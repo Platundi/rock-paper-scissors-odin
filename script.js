@@ -88,11 +88,13 @@ function game() {
   let x = "x";
   if (result == "Gewonnen") {
     gewonnen++;
+    alert("Gewonnen, CPU hatte " + cpuSelection);
     if (gewonnen == 3) {
       alert("Gewonnen!");
     }
   } else if (result == "Verloren") {
     verloren++;
+    alert("Verloren, CPU hatte " + cpuSelection);
     if (verloren == 3) {
       alert("Verloren");
     }
