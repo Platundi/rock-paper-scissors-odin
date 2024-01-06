@@ -2,13 +2,6 @@ alert("Best of Five, good luck :)");
 let gewonnen = 0;
 let verloren = 0;
 
-for (let i = 0; i <= 5; i++) {
-  let c = game();
-  if (c == "x") {
-    i--;
-  }
-}
-
 function game() {
   const playerSelection = getPlayerChoice();
   const cpuSelection = getCPUchoice();
@@ -85,20 +78,29 @@ function game() {
 
   // Ergebnisverarbeitung
   let result = playRound(playerSelection, cpuSelection);
-  let x = "x";
   if (result == "Gewonnen") {
     gewonnen++;
     alert("Gewonnen, CPU hatte " + cpuSelection);
     if (gewonnen == 3) {
       alert("Gewonnen!");
+      return "won";
     }
   } else if (result == "Verloren") {
     verloren++;
     alert("Verloren, CPU hatte " + cpuSelection);
     if (verloren == 3) {
       alert("Verloren");
+      return "lost";
     }
   } else {
-    return x;
+    return "x";
   }
 }
+
+for (let i = 0; i < 4; i++) {
+  let x = game();
+  if (x == "x") {
+    i--;
+  }
+}
+location.reload();
