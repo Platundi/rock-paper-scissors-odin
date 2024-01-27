@@ -1,0 +1,8 @@
+.result {
+    width: 200px;
+    height: 200px;
+    background-color: blue;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
