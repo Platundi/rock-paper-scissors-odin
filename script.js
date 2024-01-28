@@ -1,128 +1,127 @@
-// alert("Best of Five, good luck :)");
+alert("Best of Five, good luck :)");
 let gewonnen = 0;
 let verloren = 0;
-let x;
+let counter;
 
 let btnContainer = document.querySelector(".btnContainer");
 
 btnContainer.addEventListener("click", (event) => {
-  function game() {
-    let target = event.target;
-    const playerSelection = getPlayerChoice();
-    const cpuSelection = getCPUchoice();
+  if (event.target.id) {
+    counter = game(event);
+  }
+});
 
-    // CPU-Input
-    function getCPUchoice() {
-      let rnd = Math.floor(Math.random() * 3);
-      switch (rnd) {
-        case 0:
-          return "Rock";
-        case 1:
-          return "Paper";
-        case 2:
-          return "Scissors";
-      }
-    }
+let neustart = document.querySelector("#retry");
 
-    // Userinput
-    function getPlayerChoice() {
-      // let isValid;
-      let playerSelection;
-      // let restLetters;
+neustart.addEventListener("click", () => {
+  location.reload();
+});
 
-      // while (!isValid) {
-      //   playerSelection = prompt("Gib Rock, Paper oder Scissors ein");
-      //   restLetters = playerSelection.slice(1);
-      //   playerSelection =
-      //     playerSelection.charAt(0).toUpperCase() + restLetters.toLowerCase();
+function game(event) {
+  const playerSelection = getPlayerChoice();
+  const cpuSelection = getCPUchoice();
 
-      //   if (
-      //     playerSelection == "Rock" ||
-      //     playerSelection == "Paper" ||
-      //     playerSelection == "Scissors"
-      //   ) {
-      //     isValid = true;
-      //   } else {
-      //     alert("Falsche Eingabe. Bitte Rock, Paper oder Scissors eingeben!");
-      //   }
-      // }
-      console.log(target.id);
-      switch (target.id) {
-        case "schere":
-          playerSelection = "Scissors";
-          break;
-        case "stein":
-          playerSelection = "Rock";
-          break;
-        case "papier":
-          playerSelection = "Paper";
-          break;
-      }
-      return playerSelection;
-    }
-
-    // Spiellogik
-    function playRound(playerSelection, cpuSelection) {
-      if (playerSelection == cpuSelection) {
-        // alert("Unentschieden! Wiederholung");
-        return "Unentschieden";
-      } else {
-        switch (playerSelection) {
-          case "Rock":
-            if (cpuSelection == "Paper") {
-              return "Verloren";
-            } else if (cpuSelection == "Scissors") {
-              return "Gewonnen";
-            }
-            break;
-          case "Paper":
-            if (cpuSelection == "Rock") {
-              return "Gewonnen";
-            } else if (cpuSelection == "Scissors") {
-              return "Verloren";
-            }
-            break;
-          case "Scissors":
-            if (cpuSelection == "Rock") {
-              return "Verloren";
-            } else if (cpuSelection == "Paper") {
-              return "Gewonnen";
-            }
-        }
-      }
-    }
-
-    // Ergebnisverarbeitung
-    let resultText = document.createElement("p");
-    let resultContainer = document.querySelector(".result");
-    let result = playRound(playerSelection, cpuSelection);
-    if (result == "Gewonnen") {
-      gewonnen++;
-      resultText.textContent = result;
-      resultContainer.appendChild(resultText);
-      // alert("Gewonnen, CPU hatte " + cpuSelection);
-      // if (gewonnen == 3) {
-      //   alert("Gewonnen!");
-      //   return 1;
-      // }
-    } else if (result == "Verloren") {
-      verloren++;
-      resultText.textContent = result;
-      resultContainer.appendChild(resultText);
-      // alert("Verloren, CPU hatte " + cpuSelection);
-      // if (verloren == 3) {
-      //   alert("Verloren");
-      //   return 1;
-      // }
-    } else {
-      resultText.textContent = result;
-      resultContainer.appendChild(resultText);
-      return 0;
+  // CPU-Input
+  function getCPUchoice() {
+    let rnd = Math.floor(Math.random() * 3);
+    switch (rnd) {
+      case 0:
+        return "Stein";
+      case 1:
+        return "Papier";
+      case 2:
+        return "Schere";
     }
   }
 
-  // do {
-  x = game();
-  // } while (x != 1);
-  // location.reload();
-});
+  // Userinput
+  function getPlayerChoice() {
+    let target = event.target;
+    let playerSelection;
+    console.log(target.id);
+    switch (target.id) {
+      case "schere":
+        playerSelection = "Schere";
+        break;
+      case "stein":
+        playerSelection = "Stein";
+        break;
+      case "papier":
+        playerSelection = "Papier";
+        break;
+    }
+    return playerSelection;
+  }
+
+  // Spiellogik
+  function playRound(playerSelection, cpuSelection) {
+    if (playerSelection == cpuSelection) {
+      // alert("Unentschieden! Wiederholung");
+      return "Unentschieden";
+    } else {
+      switch (playerSelection) {
+        case "Stein":
+          if (cpuSelection == "Papier") {
+            return "Verloren";
+          } else if (cpuSelection == "Schere") {
+            return "Gewonnen";
+          }
+          break;
+        case "Papier":
+          if (cpuSelection == "Stein") {
+            return "Gewonnen";
+          } else if (cpuSelection == "Schere") {
+            return "Verloren";
+          }
+          break;
+        case "Schere":
+          if (cpuSelection == "Stein") {
+            return "Verloren";
+          } else if (cpuSelection == "Papier") {
+            return "Gewonnen";
+          }
+      }
+    }
+  }
+
+  // Ergebnisverarbeitung
+  let resultText = document.createElement("p");
+  let resultContainer = document.querySelector(".result");
+  let result = playRound(playerSelection, cpuSelection);
+  if (result == "Gewonnen") {
+    gewonnen++;
+    resultText.textContent = `${result}, CPU hatte: ` + cpuSelection;
+    resultContainer.appendChild(resultText);
+    if (gewonnen == 5) {
+      alert("Spiel Gewonnen!");
+      if (window.confirm("Nochmal spielen?") == true) {
+        location.reload();
+      } else {
+        disable();
+      }
+    }
+  } else if (result == "Verloren") {
+    verloren++;
+    resultText.textContent = `${result}, CPU hatte: ` + cpuSelection;
+    resultContainer.appendChild(resultText);
+    if (verloren == 5) {
+      alert("Spiel Verloren");
+      if (window.confirm("Nochmal spielen?") == true) {
+        location.reload();
+      } else {
+        disable();
+      }
+    }
+  } else {
+    resultText.textContent = `${result}`;
+    resultContainer.appendChild(resultText);
+  }
+
+  // Buttons disablen
+  function disable() {
+    let childNodes = btnContainer.childNodes;
+    childNodes.forEach((child) => {
+      child.disabled = true;
+    });
+  }
+}
